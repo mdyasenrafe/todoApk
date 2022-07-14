@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../Components/Text/Button";
+import Input from "../Components/Text/Input";
 import OwnText from "../Components/Text/OwnText";
 
 export const Signin = ({ navigation }: { navigation: any }) => {
@@ -30,16 +31,12 @@ export const Signin = ({ navigation }: { navigation: any }) => {
         Never forget your notes
       </OwnText>
       <View style={{ paddingHorizontal: 16, paddingVertical: 25 }}>
-        <TextInput style={styles.input} placeholder="Email" />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry
-        />
+        <Input password={false} title="Email" />
+        <Input password={true} title="Password" />
       </View>
       <View style={styles.bottom}>
         <Button style={styles.button} title="Login" onPress={handleLogin} />
-        <Pressable onPress={() => navigation.navigate("SignUp")}>
+        <Pressable onPress={() => navigation.navigate("Signup")}>
           <OwnText preset="p">
             Don't have an account?{" "}
             <OwnText preset="h6" style={{ color: "green" }}>
@@ -52,14 +49,8 @@ export const Signin = ({ navigation }: { navigation: any }) => {
   );
 };
 const styles = StyleSheet.create({
-  input: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    height: 48,
-    marginBottom: 25,
-  },
   button: {
-    marginBottom: 24,
+    marginBottom: 16,
   },
   bottom: {
     flex: 1,

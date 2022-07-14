@@ -1,4 +1,5 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import {
   Image,
   Pressable,
@@ -8,28 +9,98 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useDispatch } from "react-redux";
+import { signUpApi } from "../../API/Index";
+import { signUpWithEmail } from "../../Redux/Action";
 import Button from "../Components/Text/Button";
+import Input from "../Components/Text/Input";
 import OwnText from "../Components/Text/OwnText";
 
-export const SignUp = () => {
-  const handleLogin = (): void => {
-    console.log("object");
+const genderOptions: string[] = ["Male", "Female"];
+
+export const Signup = ({ navigation }: any) => {
+  const [gender, setGender] = useState<string | null>(null);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [name, setName] = useState<string | null>(null);
+  const [age, setAge] = useState<number | null>(null);
+
+  const handleGender = (option: string): void => {
+    setGender(option);
   };
+
+  const dispatch: any = useDispatch();
+
+  const handleSignup = (): void => {
+    dispatch(signUpWithEmail(email, password)).then(async (res: any) => {
+      if (res) {
+        let bodyData: SignupBodyData = {
+          name: name,
+          age: age,
+          email: email,
+          password: password,
+          gender: gender,
+        };
+
+        // const response = await signUpApi(bodyData);
+        // console.log(response, "firebase response", res);
+      }
+    });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View>
-        <TextInput style={styles.input} placeholder="Email" />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry
+      <View style={{ paddingHorizontal: 16 }}>
+        <Input
+          password={false}
+          title="Email"
+          onChangeText={(e: any) => setEmail(e)}
         />
-        <TextInput style={styles.input} placeholder="Full Name" />
-        <TextInput style={styles.input} placeholder="Age" />
+        <Input
+          password={true}
+          title="Password"
+          onChangeText={(e: any) => setPassword(e)}
+        />
+        <Input
+          password={false}
+          title="Full Name"
+          onChangeText={(e: any) => setName(e)}
+        />
+        <Input
+          password={false}
+          title="Age"
+          onChangeText={(e: any) => setAge(e)}
+        />
+        {genderOptions.map((option, index) => {
+          const selected: boolean = option === gender;
+
+          return (
+            <Pressable
+              key={index}
+              onPress={() => handleGender(option)}
+              style={styles.radioContainer}
+            >
+              <View
+                style={[
+                  styles.outerCircle,
+                  selected && styles.selectedOuterCircle,
+                ]}
+              >
+                <View
+                  style={[
+                    styles.innerCircle,
+                    selected && styles.selectdInnerCircle,
+                  ]}
+                />
+              </View>
+              <OwnText style={styles.radioText}>{option}</OwnText>
+            </Pressable>
+          );
+        })}
       </View>
       <View style={styles.bottom}>
-        <Button style={styles.button} title="Sign up" onPress={handleLogin} />
-        <Pressable>
+        <Button style={styles.button} title="Sign up" onPress={handleSignup} />
+        <Pressable onPress={() => navigation.navigate("Signin")}>
           <OwnText preset="p">
             Already have an acceount?{" "}
             <OwnText preset="h6" style={{ color: "green" }}>
@@ -41,13 +112,8 @@ export const SignUp = () => {
     </SafeAreaView>
   );
 };
+
 const styles = StyleSheet.create({
-  input: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    height: 48,
-    marginBottom: 25,
-  },
   button: {
     marginBottom: 24,
   },
@@ -57,4 +123,36 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingBottom: 24,
   },
+  radioContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8,
+  },
+  outerCircle: {
+    width: 24,
+    height: 24,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "#CFCFCF",
+    marginRight: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  innerCircle: {
+    width: 12,
+    height: 12,
+    borderRadius: 25,
+    borderColor: "#CFCFCF",
+    borderWidth: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  selectedOuterCircle: {
+    borderColor: "orange",
+  },
+  selectdInnerCircle: {
+    backgroundColor: "orange",
+    borderColor: "orange",
+  },
+  radioText: {},
 });

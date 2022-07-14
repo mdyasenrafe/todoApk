@@ -7,7 +7,10 @@ import Home from "./src/View/Screens/Home";
 import Create from "./src/View/Screens/Todo/Create";
 import Edit from "./src/View/Screens/Todo/Edit";
 import { Signin } from "./src/View/Screens/Signin";
-import { SignUp } from "./src/View/Screens/SignUp";
+import { Signup } from "./src/View/Screens/Signup";
+import { Provider } from "react-redux";
+import AuthStore from "./Store";
+import firebaseInitAuth from "./Firebase/Firebase.init";
 
 export default function App() {
   const [loaded] = useFonts({
@@ -31,26 +34,28 @@ export default function App() {
   };
 
   return (
-    <NavigationContainer theme={AppTheme}>
-      <Stack.Navigator>
-        {user ? (
-          <>
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="create" component={Create} />
-            <Stack.Screen name="edit" component={Edit} />
-          </>
-        ) : (
-          <>
-            <Stack.Screen
-              name="Signin"
-              component={Signin}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen name="SignUp" component={SignUp} />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={AuthStore}>
+      <NavigationContainer theme={AppTheme}>
+        <Stack.Navigator>
+          {user ? (
+            <>
+              <Stack.Screen name="Home" component={Home} />
+              <Stack.Screen name="create" component={Create} />
+              <Stack.Screen name="edit" component={Edit} />
+            </>
+          ) : (
+            <>
+              <Stack.Screen
+                name="Signin"
+                component={Signin}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen name="Signup" component={Signup} />
+            </>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
