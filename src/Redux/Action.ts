@@ -28,3 +28,8 @@ export const signUpWithEmail =
     dispatch(signUpStartAction());
     return createUserWithEmailAndPassword(auth, email, password);
   };
+export const signInWithEmail =
+  (email: string, password: string) => (dispatch: any, getState: any) => {
+    dispatch(signUpStartAction());
+    return createUserWithEmailAndPassword(auth, email, password);
+  };

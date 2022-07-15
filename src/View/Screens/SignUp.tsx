@@ -9,9 +9,13 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signUpApi } from "../../API/Index";
-import { signUpWithEmail } from "../../Redux/Action";
+import {
+  signUpFailAction,
+  signUpSuccessAction,
+  signUpWithEmail,
+} from "../../Redux/Action";
 import Button from "../Components/Text/Button";
 import Input from "../Components/Text/Input";
 import OwnText from "../Components/Text/OwnText";
@@ -19,8 +23,11 @@ import OwnText from "../Components/Text/OwnText";
 const genderOptions: string[] = ["Male", "Female"];
 
 export const Signup = ({ navigation }: any) => {
+  const { email } = useSelector((state: any) => state);
+  console.log(email);
+
   const [gender, setGender] = useState<string | null>(null);
-  const [email, setEmail] = useState<string>("");
+  const [userEmail, setUserEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [name, setName] = useState<string | null>(null);
   const [age, setAge] = useState<number | null>(null);
@@ -32,20 +39,27 @@ export const Signup = ({ navigation }: any) => {
   const dispatch: any = useDispatch();
 
   const handleSignup = (): void => {
-    dispatch(signUpWithEmail(email, password)).then(async (res: any) => {
-      if (res) {
-        let bodyData: SignupBodyData = {
-          name: name,
-          age: age,
-          email: email,
-          password: password,
-          gender: gender,
-        };
-
-        // const response = await signUpApi(bodyData);
-        // console.log(response, "firebase response", res);
-      }
-    });
+    dispatch(signUpWithEmail(userEmail, password))
+      .then(async (res: any) => {
+        if (res) {
+          let bodyData: SignupBodyData = {
+            name: name,
+            age: age,
+            email: userEmail,
+            password: password,
+            gender: gender,
+          };
+          const response = await signUpApi(bodyData);
+          if (response?.error !== true) {
+            console.log(response?.data);
+            dispatch(signUpSuccessAction(response?.data));
+          }
+        }
+      })
+      .catch((err: any) => {
+        console.log(err);
+        dispatch(signUpFailAction(err.message));
+      });
   };
 
   return (
@@ -54,7 +68,7 @@ export const Signup = ({ navigation }: any) => {
         <Input
           password={false}
           title="Email"
-          onChangeText={(e: any) => setEmail(e)}
+          onChangeText={(e: any) => setUserEmail(e)}
         />
         <Input
           password={true}

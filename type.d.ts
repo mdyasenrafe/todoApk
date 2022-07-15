@@ -23,3 +23,13 @@ interface SignupBodyData {
   age: number | null;
   gender: string | null;
 }
+
+interface signUpState {
+  isLoading: boolean;
+  error: string;
+  user: any | null;
+}
+
+interface IState {
+  email: signUpState;
+}

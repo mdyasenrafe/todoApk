@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:5001/";
+const url = "https://todoapkapi.herokuapp.com/";
 
 const apiUrl = {
   signUp: "login/signup",
