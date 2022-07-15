@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import firebaseInitAuth from "../../Firebase/Firebase.init";
 import axios from "axios";
@@ -56,5 +57,5 @@ export const onAuthChange = () => (dispatch: any, getState: any) => {
 export const signInWithEmail =
   (email: string, password: string) => (dispatch: any, getState: any) => {
     dispatch(signUpStartAction());
-    return createUserWithEmailAndPassword(auth, email, password);
+    return signInWithEmailAndPassword(auth, email, password);
   };

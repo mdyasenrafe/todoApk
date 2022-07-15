@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, TextStyle, TouchableOpacity } from "react-native";
-import OwnText from "./OwnText";
+import OwnText from "./Text/OwnText";
 
 export default function Button(props: buttonProps) {
   const { title, style: customStyle, onPress } = props;

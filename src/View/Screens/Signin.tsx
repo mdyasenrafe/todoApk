@@ -1,22 +1,54 @@
 import React from "react";
-import {
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  View,
-} from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Button from "../Components/Text/Button";
-import Input from "../Components/Text/Input";
+import { useDispatch } from "react-redux";
+import { signinApi } from "../../API/Index";
+import Toast from "react-native-toast-message";
+import {
+  signInWithEmail,
+  signUpFailAction,
+  signUpSuccessAction,
+} from "../../Redux/Action";
+import Button from "../Components/Button";
+import Input from "../Components/Input";
 import OwnText from "../Components/Text/OwnText";
 
 export const Signin = ({ navigation }: { navigation: any }) => {
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
-
-  const handleLogin = (): void => {};
+  const dispatch: any = useDispatch();
+  const handleLogin = (): void => {
+    if (email !== "" && password !== "") {
+      dispatch(signInWithEmail(email, password))
+        .then(async (res: any) => {
+          let bodyData: SigninBodyData = {
+            email: email,
+          };
+          console.log(res);
+          const response = await signinApi(bodyData);
+          if (response.error === false) {
+            dispatch(signUpSuccessAction(response.data));
+            Toast.show({
+              type: "success",
+              text1: "signin successfully",
+            });
+            setTimeout(() => {
+              Toast.hide();
+            }, 2000);
+          }
+        })
+        .catch((err: any) => {
+          dispatch(signUpFailAction(err.message));
+          Toast.show({
+            type: "error",
+            text1: err.message,
+          });
+          setTimeout(() => {
+            Toast.hide();
+          }, 2000);
+        });
+    }
+  };
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image
@@ -24,7 +56,7 @@ export const Signin = ({ navigation }: { navigation: any }) => {
         style={{
           alignSelf: "center",
           width: "100%",
-          height: 350,
+          height: 300,
           margin: 14,
         }}
       />
@@ -36,6 +68,7 @@ export const Signin = ({ navigation }: { navigation: any }) => {
           password={false}
           title="Email"
           onChangeText={(e: any) => setEmail(e)}
+          autoCapitalize="none"
         />
         <Input
           password={true}
@@ -62,8 +95,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   bottom: {
-    flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
     paddingBottom: 24,
   },

@@ -8,6 +8,8 @@ interface InputProps {
   title: string;
   password: boolean;
   onChangeText?: (text: string | number) => void;
+  autoCapitalize?: "none" | "sentences" | "words" | "characters";
+  multiline?: boolean;
 }
 
 interface buttonProps {
@@ -24,6 +26,9 @@ interface SignupBodyData {
   gender: string | null;
 }
 
+interface SigninBodyData {
+  email: string;
+}
 interface signUpState {
   isLoading: boolean;
   error: string;

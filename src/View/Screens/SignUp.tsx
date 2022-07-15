@@ -9,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Toast from "react-native-toast-message";
 import { useDispatch, useSelector } from "react-redux";
 import { signUpApi } from "../../API/Index";
 import {
@@ -16,16 +17,15 @@ import {
   signUpSuccessAction,
   signUpWithEmail,
 } from "../../Redux/Action";
-import Button from "../Components/Text/Button";
-import Input from "../Components/Text/Input";
+import Button from "../Components/Button";
+import Input from "../Components/Input";
+import RadioInput from "../Components/RadioInput";
 import OwnText from "../Components/Text/OwnText";
 
 const genderOptions: string[] = ["Male", "Female"];
 
 export const Signup = ({ navigation }: any) => {
-  const { email } = useSelector((state: any) => state);
-  console.log(email);
-
+  // state
   const [gender, setGender] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -51,13 +51,25 @@ export const Signup = ({ navigation }: any) => {
           };
           const response = await signUpApi(bodyData);
           if (response?.error !== true) {
-            console.log(response?.data);
             dispatch(signUpSuccessAction(response?.data));
+            Toast.show({
+              type: "success",
+              text1: "signin successfully",
+            });
+            setTimeout(() => {
+              Toast.hide();
+            }, 2000);
           }
         }
       })
       .catch((err: any) => {
-        console.log(err);
+        Toast.show({
+          type: "error",
+          text1: err.message,
+        });
+        setTimeout(() => {
+          Toast.hide();
+        }, 2000);
         dispatch(signUpFailAction(err.message));
       });
   };
@@ -69,6 +81,7 @@ export const Signup = ({ navigation }: any) => {
           password={false}
           title="Email"
           onChangeText={(e: any) => setUserEmail(e)}
+          autoCapitalize="none"
         />
         <Input
           password={true}
@@ -79,38 +92,21 @@ export const Signup = ({ navigation }: any) => {
           password={false}
           title="Full Name"
           onChangeText={(e: any) => setName(e)}
+          autoCapitalize="words"
         />
         <Input
           password={false}
           title="Age"
           onChangeText={(e: any) => setAge(e)}
         />
-        {genderOptions.map((option, index) => {
-          const selected: boolean = option === gender;
-
-          return (
-            <Pressable
-              key={index}
-              onPress={() => handleGender(option)}
-              style={styles.radioContainer}
-            >
-              <View
-                style={[
-                  styles.outerCircle,
-                  selected && styles.selectedOuterCircle,
-                ]}
-              >
-                <View
-                  style={[
-                    styles.innerCircle,
-                    selected && styles.selectdInnerCircle,
-                  ]}
-                />
-              </View>
-              <OwnText style={styles.radioText}>{option}</OwnText>
-            </Pressable>
-          );
-        })}
+        {genderOptions.map((option: string, index: number) => (
+          <RadioInput
+            key={index}
+            value={gender}
+            label={option}
+            onPress={setGender}
+          />
+        ))}
       </View>
       <View style={styles.bottom}>
         <Button style={styles.button} title="Sign up" onPress={handleSignup} />

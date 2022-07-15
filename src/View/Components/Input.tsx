@@ -2,13 +2,15 @@ import React from "react";
 import { StyleSheet, TextInput } from "react-native";
 
 export default function Input(props: InputProps) {
-  const { title, password, onChangeText } = props;
+  const { title, password, onChangeText, autoCapitalize, multiline } = props;
   return (
     <TextInput
       style={styles.input}
       placeholder={title}
       onChangeText={onChangeText}
       secureTextEntry={password}
+      autoCapitalize={autoCapitalize}
+      multiline={multiline}
     />
   );
 }
