@@ -8,9 +8,12 @@ import Create from "./src/View/Screens/Todo/Create";
 import Edit from "./src/View/Screens/Todo/Edit";
 import { Signin } from "./src/View/Screens/Signin";
 import { Signup } from "./src/View/Screens/Signup";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import AuthStore from "./Store";
-import firebaseInitAuth from "./Firebase/Firebase.init";
+import { useEffect } from "react";
+import { onAuthChange } from "./src/Redux/Action";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { RootNavigator } from "./Navigation/Navigation";
 
 export default function App() {
   const [loaded] = useFonts({
@@ -22,39 +25,12 @@ export default function App() {
   if (!loaded) {
     return null;
   }
-  const Stack: any = createNativeStackNavigator();
-  const user: boolean = false;
-
-  const AppTheme: any = {
-    ...DefaultTheme,
-    colors: {
-      ...DefaultTheme.colors,
-      background: "#fff",
-    },
-  };
 
   return (
     <Provider store={AuthStore}>
-      <NavigationContainer theme={AppTheme}>
-        <Stack.Navigator>
-          {user ? (
-            <>
-              <Stack.Screen name="Home" component={Home} />
-              <Stack.Screen name="create" component={Create} />
-              <Stack.Screen name="edit" component={Edit} />
-            </>
-          ) : (
-            <>
-              <Stack.Screen
-                name="Signin"
-                component={Signin}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen name="Signup" component={Signup} />
-            </>
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
+      <SafeAreaProvider>
+        <RootNavigator />
+      </SafeAreaProvider>
     </Provider>
   );
 }

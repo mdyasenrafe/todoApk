@@ -1,6 +1,11 @@
 import * as actionTypes from "./ActionTypes";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+} from "firebase/auth";
 import firebaseInitAuth from "../../Firebase/Firebase.init";
+import axios from "axios";
 
 firebaseInitAuth();
 const auth = getAuth();
@@ -28,6 +33,26 @@ export const signUpWithEmail =
     dispatch(signUpStartAction());
     return createUserWithEmailAndPassword(auth, email, password);
   };
+
+export const onAuthChange = () => (dispatch: any, getState: any) => {
+  dispatch(signUpStartAction());
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const url = "https://todoapkapi.herokuapp.com/login/signin";
+      axios
+        .post(url, {
+          email: user.email,
+        })
+        .then((res: any) => {
+          dispatch(signUpSuccessAction(res.data.data));
+        })
+        .catch((err: any) => {
+          dispatch(signUpFailAction(err.message));
+        });
+    }
+  });
+};
+
 export const signInWithEmail =
   (email: string, password: string) => (dispatch: any, getState: any) => {
     dispatch(signUpStartAction());

@@ -13,9 +13,10 @@ import Input from "../Components/Text/Input";
 import OwnText from "../Components/Text/OwnText";
 
 export const Signin = ({ navigation }: { navigation: any }) => {
-  const handleLogin = (): void => {
-    console.log("object");
-  };
+  const [email, setEmail] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
+
+  const handleLogin = (): void => {};
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image
@@ -31,8 +32,16 @@ export const Signin = ({ navigation }: { navigation: any }) => {
         Never forget your notes
       </OwnText>
       <View style={{ paddingHorizontal: 16, paddingVertical: 25 }}>
-        <Input password={false} title="Email" />
-        <Input password={true} title="Password" />
+        <Input
+          password={false}
+          title="Email"
+          onChangeText={(e: any) => setEmail(e)}
+        />
+        <Input
+          password={true}
+          title="Password"
+          onChangeText={(e: any) => setPassword(e)}
+        />
       </View>
       <View style={styles.bottom}>
         <Button style={styles.button} title="Login" onPress={handleLogin} />

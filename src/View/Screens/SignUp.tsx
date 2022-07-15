@@ -132,10 +132,9 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   bottom: {
-    flex: 1,
+    marginTop: 24,
     justifyContent: "flex-end",
     alignItems: "center",
-    paddingBottom: 24,
   },
   radioContainer: {
     flexDirection: "row",
