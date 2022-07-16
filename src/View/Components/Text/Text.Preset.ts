@@ -25,5 +25,8 @@ export const presets = {
   p: {
     ...BASE,
   },
+  small: {
+    fontSize: 14,
+  },
 };
 export type TextPresets = keyof typeof presets;

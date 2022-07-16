@@ -2,7 +2,8 @@ import React from "react";
 import { StyleSheet, TextInput } from "react-native";
 
 export default function Input(props: InputProps) {
-  const { title, password, onChangeText, autoCapitalize, multiline } = props;
+  const { title, password, onChangeText, autoCapitalize, multiline, value } =
+    props;
   return (
     <TextInput
       style={styles.input}
@@ -11,6 +12,7 @@ export default function Input(props: InputProps) {
       secureTextEntry={password}
       autoCapitalize={autoCapitalize}
       multiline={multiline}
+      value={value}
     />
   );
 }

@@ -10,6 +10,7 @@ interface InputProps {
   onChangeText?: (text: string | number) => void;
   autoCapitalize?: "none" | "sentences" | "words" | "characters";
   multiline?: boolean;
+  value?: string;
 }
 
 interface buttonProps {
@@ -26,6 +27,14 @@ interface SignupBodyData {
   gender: string | null;
 }
 
+interface CreateTodoBodyData {
+  title: string;
+  description: string;
+  theme: string;
+  email?: string;
+  _id?: string;
+}
+
 interface SigninBodyData {
   email: string;
 }
@@ -37,4 +46,8 @@ interface signUpState {
 
 interface IState {
   email: signUpState;
+}
+
+interface DeleteTodoBody {
+  _id: string;
 }

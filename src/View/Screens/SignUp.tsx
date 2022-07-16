@@ -102,6 +102,7 @@ export const Signup = ({ navigation }: any) => {
         {genderOptions.map((option: string, index: number) => (
           <RadioInput
             key={index}
+            index={index}
             value={gender}
             label={option}
             onPress={setGender}

@@ -46,7 +46,7 @@ export function RootNavigator() {
           <>
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="create" component={Create} />
-            <Stack.Screen name="edit" component={Edit} />
+            <Stack.Screen name="update" component={Edit} />
           </>
         ) : (
           <>

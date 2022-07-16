@@ -3,18 +3,18 @@ import { Pressable, View, StyleSheet } from "react-native";
 import OwnText from "./Text/OwnText";
 
 interface RadioInputProps {
-  key: number;
+  index: number;
   value: string | null;
   label: string;
   onPress: (value: string) => void;
 }
 
 const RadioInput = (props: RadioInputProps) => {
-  const { key, value, label, onPress } = props;
+  const { index, value, label, onPress } = props;
   const selected = label === value;
   return (
     <Pressable
-      key={key}
+      key={index}
       onPress={() => onPress(label)}
       style={styles.radioContainer}
     >
